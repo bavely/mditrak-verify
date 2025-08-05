@@ -47,7 +47,7 @@ export default function SignupFormDemo() {
           <Input
             id="twitterpassword"
             placeholder="••••••••"
-            type="twitterpassword"
+            type="password"
           />
         </LabelInputContainer>
 
