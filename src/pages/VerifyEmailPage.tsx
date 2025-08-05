@@ -47,7 +47,6 @@ export default function VerifyEmailPage() {
   useEffect(() => {
     verifyEmail({ variables: { token } })
       .then((res) => {
-        console.log(res);
         setMessage(res.data.message.verifyEmail);
       })
       .catch((err) => setMessage(err.message));
@@ -58,15 +57,12 @@ export default function VerifyEmailPage() {
     setShowRequestNewVerification(true);
     resendVerificationEmail({ variables: { token } })
       .then((res) => {
-        console.log(res);
         setMessage(res.data.message.resendVerificationEmail);
       })
       .catch((err) => {
-        console.log(err);
         setMessage(err.message);
       });
   };
-console.log(message);
   return (
     <div className="flex flex-col items-center justify-start min-h-screen p-4 bg-gray-100">
       {showRequestNewVerification ? (
