@@ -45,12 +45,21 @@ export default function VerifyEmailPage() {
   const [showRequestNewVerification, setShowRequestNewVerification] =
     useState(false);
   useEffect(() => {
-    verifyEmail({ variables: { token } })
-      .then((res) => {
+    async function verify() {
+      try {
+        const res = await verifyEmail({ variables: { token } });
+
         setMessage(res.data.message.verifyEmail);
-      })
-      .catch((err) => setMessage(err.message));
-  }, [token]);
+      } catch (err) {
+        if (err instanceof Error) {
+          setMessage(err.message);
+        } else {
+          setMessage(String(err));
+        }
+      }
+    }
+    verify();
+  }, [verifyEmail, token]);
 
   const handleRequestNewVerification = () => {
     setMessage("");
