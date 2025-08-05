@@ -42,16 +42,21 @@ export default function VerifyEmailPage() {
     REQUEST_NEW_VERIFICATION
   );
   const [message, setMessage] = useState("Verifying...");
+  const [success, setSuccess] = useState(false);
   const [showRequestNewVerification, setShowRequestNewVerification] =
     useState(false);
   useEffect(() => {
     verifyEmail({ variables: { token } })
       .then((res) => {
         console.log(res);
-        setMessage(res.data.message.verifyEmail);
+        setSuccess(res.data.verifyEmail.success);
+        setMessage(res.data.verifyEmail.data.message);
       })
-      .catch((err) => setMessage(err.message));
-  }, [token]);
+      .catch((err) => {
+        setSuccess(false);
+        setMessage(err.message);
+      });
+  }, [token, verifyEmail]);
 
   const handleRequestNewVerification = () => {
     setMessage("");
@@ -59,10 +64,12 @@ export default function VerifyEmailPage() {
     resendVerificationEmail({ variables: { token } })
       .then((res) => {
         console.log(res);
-        setMessage(res.data.message.resendVerificationEmail);
+        setSuccess(res.data.resendVerificationEmail.success);
+        setMessage(res.data.resendVerificationEmail.data.message);
       })
       .catch((err) => {
         console.log(err);
+        setSuccess(false);
         setMessage(err.message);
       });
   };
@@ -73,8 +80,10 @@ console.log(message);
         <>
           {resendLoading ? (
             <Spinner size="large" />
+          ) : success ? (
+            <p className="text-[green]">{message}</p>
           ) : (
-            <>{message.search("sent") !== -1 ? <p className="text-[green]">{message}</p> : <p className="text-[red]">{message}</p>}</>
+            <p className="text-[red]">{message}</p>
           )}
         </>
       ) : (
@@ -83,30 +92,29 @@ console.log(message);
           <h2 className="text-2xl font-bold">Email Verification</h2>
           {loading ? (
             <Spinner size="large" />
+          ) : success ? (
+            <>
+              <div className="success-animation">
+<svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+</div>
+              <p className="text-[green]">{message}</p>
+            </>
           ) : (
             <>
-              {message.search("successfully") !== -1 ? (
-                <><div className="success-animation">
-<svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
-</div><p className="text-[green]">{message}</p></>
-              ) : (
-                <>
-                <div className="error-animation">
+              <div className="error-animation">
   <svg className="crossmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
     <circle className="crossmark__circle" cx="26" cy="26" r="25" fill="none" />
     <path className="crossmark__line1" d="M16 16 L36 36" fill="none" />
     <path className="crossmark__line2" d="M36 16 L16 36" fill="none" />
   </svg>
 </div>
-                  <p className="text-[red]">{message}</p>
-                  <Button
-                    className="mt-4"
-                    onClick={handleRequestNewVerification}
-                  >
-                    Request New Verification
-                  </Button>
-                </>
-              )}
+              <p className="text-[red]">{message}</p>
+              <Button
+                className="mt-4"
+                onClick={handleRequestNewVerification}
+              >
+                Request New Verification
+              </Button>
             </>
           )}
         </>
