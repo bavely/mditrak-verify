@@ -46,6 +46,7 @@ export default function VerifyEmailPage() {
   const [showRequestNewVerification, setShowRequestNewVerification] =
     useState(false);
   useEffect(() => {
+
     verifyEmail({ variables: { token } })
       .then((res) => {
         console.log(res);
@@ -58,11 +59,13 @@ export default function VerifyEmailPage() {
       });
   }, [token, verifyEmail]);
 
+
   const handleRequestNewVerification = () => {
     setMessage("");
     setShowRequestNewVerification(true);
     resendVerificationEmail({ variables: { token } })
       .then((res) => {
+
         console.log(res);
         setSuccess(res.data.resendVerificationEmail.success);
         setMessage(res.data.resendVerificationEmail.data.message);
@@ -70,10 +73,10 @@ export default function VerifyEmailPage() {
       .catch((err) => {
         console.log(err);
         setSuccess(false);
+
         setMessage(err.message);
       });
   };
-console.log(message);
   return (
     <div className="flex flex-col items-center justify-start min-h-screen p-4 bg-gray-100">
       {showRequestNewVerification ? (
