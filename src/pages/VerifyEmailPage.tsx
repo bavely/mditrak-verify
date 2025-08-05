@@ -48,6 +48,7 @@ export default function VerifyEmailPage() {
     async function verify() {
       try {
         const res = await verifyEmail({ variables: { token } });
+
         setMessage(res.data.message.verifyEmail);
       } catch (err) {
         if (err instanceof Error) {
