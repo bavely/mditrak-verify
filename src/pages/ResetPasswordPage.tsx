@@ -64,8 +64,8 @@ export default function ResetPasswordPage() {
     } catch (error: unknown) {
       console.error('Reset password error', error);
       // Narrow the unknown to an ApolloError
-      if (isApolloError(error)) {
-        const gqlErr = error.graphQLErrors[0];
+      if (isApolloError(error as Error)) {
+        const gqlErr = (error as import('@apollo/client').ApolloError).graphQLErrors?.[0];
         // Our interceptor stored the full envelope in extensions
         const ext = gqlErr?.extensions as {
           success: boolean;
@@ -84,6 +84,9 @@ export default function ResetPasswordPage() {
         });
       }
     }
+     
+     
+
   };
 
   return (

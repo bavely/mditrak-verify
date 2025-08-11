@@ -65,6 +65,7 @@ export default function VerifyEmailPage() {
     setShowRequestNewVerification(true);
     resendVerificationEmail({ variables: { token } })
       .then((res) => {
+        
 
         console.log(res);
         setSuccess(res.data.resendVerificationEmail.success);
