@@ -1,5 +1,4 @@
-// src/App.js
-import React from 'react';
+// src/App.tsx
 import { Routes, Route, Navigate } from 'react-router-dom';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
