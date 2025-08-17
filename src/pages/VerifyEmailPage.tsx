@@ -1,5 +1,5 @@
-// src/pages/VerifyEmailPage.js
-import React, { useEffect, useState } from "react";
+// src/pages/VerifyEmailPage.tsx
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { Button } from "@/components/ui/button";
